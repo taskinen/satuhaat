@@ -16,7 +16,17 @@ var ruudut = [
   ];
 
 ruudut = shuffle(ruudut);
-console.log(ruudut);
+// console.log(ruudut);
+
+document.write("<table border=\"1\">");
+for (var i=0; i<4; i++) {
+  document.write("<tr>");
+  for (var j=0; j<4; j++) {
+    document.write("<td>" + ruudut[i+j] + "</td>");
+  }
+  document.write("</tr>");
+}
+document.write("</table>");
 </script>
   
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
