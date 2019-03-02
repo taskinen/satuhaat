@@ -66,7 +66,8 @@ document.write("<table border=\"1\">");
 for (var i=0; i<4; i++) {
   document.write("<tr>");
   for (var j=0; j<4; j++) {
-    document.write("<td>" + ruudut[i+j] + "</td>");
+    document.write("<td>" + ruudut[0] + "</td>");
+	ruudut.shift();
   }
   document.write("</tr>");
 }
