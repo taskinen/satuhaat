@@ -10,7 +10,7 @@
 
 <body>
 
-<h1>Satuhäät bingo</h1>
+<h1 class="text-center">Satuhäät bingo</h1>
 
 <script>
 var ruudut = [
@@ -67,16 +67,18 @@ var ruudut = [
 ruudut = shuffle(ruudut);
 // console.log(ruudut);
 
-document.write("<table border=\"1\">");
+document.write("<div class=\"container\">");
+document.write("<table class=\"table table-bordered\">");
 for (var i=0; i<4; i++) {
   document.write("<tr>");
   for (var j=0; j<4; j++) {
-    document.write("<td>" + ruudut[0] + "</td>");
+    document.write("<td style=\"width: 25%\" style=\"height: 25%\">" + ruudut[0] + "</td>");
 	ruudut.shift();
   }
   document.write("</tr>");
 }
 document.write("</table>");
+document.write("</div>");
 </script>
   
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
