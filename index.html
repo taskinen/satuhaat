@@ -14,10 +14,15 @@
 
 <style>
   .square-cell {
-    width: 150px;
     height: 150px;
     text-align: center;
     vertical-align: middle;
+    padding: 10px;
+  }
+  
+  .table {
+    table-layout: fixed;
+    width: 100%;
   }
 </style>
 
@@ -94,9 +99,9 @@ document.write("<div class=\"container\">");
     document.write("<tr>");
     for (var j=0; j<5; j++) {
       if (i === 2 && j === 2) {
-        document.write("<td class=\"square-cell\">Enya</td>"); // :)
+        document.write("<td class=\"square-cell align-middle\">Enya</td>"); // :)
       } else {
-        document.write("<td class=\"square-cell\">" + ruudut[0] + "</td>");
+        document.write("<td class=\"square-cell align-middle\">" + ruudut[0] + "</td>");
         ruudut.shift();
       }
     }
