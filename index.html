@@ -4,34 +4,132 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <script src="scripts.js"></script>
   <title>Satuhäät ja Unelmahäät bingo</title>
 </head>
 
 <body>
+<div class="theme-toggle">
+  <button id="theme-toggle-btn" class="btn" aria-label="Toggle theme">
+    <i class="bi bi-sun-fill"></i>
+  </button>
+</div>
 
 <h1 class="text-center">Satuhäät ja Unelmahäät bingo</h1>
 
 <style>
+  :root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --cell-bg: #ffffff;
+    --cell-selected: #e9ecef;
+    --border-color: #dee2e6;
+  }
+
+  [data-theme="dark"] {
+    --bg-color: #212529;
+    --text-color: #ffffff;
+    --cell-bg: #343a40;
+    --cell-selected: #495057;
+    --border-color: #495057;
+  }
+
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
   .square-cell {
     height: 150px;
     text-align: center;
     vertical-align: middle;
     padding: 10px;
     cursor: pointer;
+    background-color: var(--cell-bg);
+    color: var(--text-color);
+    border-color: var(--border-color) !important;
   }
   
   .square-cell.selected {
-    background-color: lightgray;
+    background-color: var(--cell-selected);
   }
   
   .table {
     table-layout: fixed;
     width: 100%;
   }
+
+  .theme-toggle {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  #theme-toggle-btn {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  #theme-toggle-btn:hover {
+    transform: scale(1.1);
+  }
+
+  .table-bordered {
+    border-color: var(--border-color);
+  }
 </style>
 
 <script>
+// Theme handling
+function getPreferredTheme() {
+  if (localStorage.getItem('theme')) {
+    return localStorage.getItem('theme');
+  }
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('theme', theme);
+  updateThemeToggleButton(theme);
+}
+
+function updateThemeToggleButton(theme) {
+  const button = document.getElementById('theme-toggle-btn');
+  const icon = button.querySelector('i');
+  if (theme === 'dark') {
+    icon.className = 'bi bi-moon-fill';
+  } else {
+    icon.className = 'bi bi-sun-fill';
+  }
+}
+
+function toggleTheme() {
+  const currentTheme = document.documentElement.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  setTheme(newTheme);
+}
+
+// Initialize theme
+document.addEventListener('DOMContentLoaded', () => {
+  setTheme(getPreferredTheme());
+  document.getElementById('theme-toggle-btn').addEventListener('click', toggleTheme);
+});
+
+// Watch for system theme changes
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+  if (!localStorage.getItem('theme')) {
+    setTheme(e.matches ? 'dark' : 'light');
+  }
+});
+
 function toggleSelected(cell) {
   cell.classList.toggle('selected');
 }
