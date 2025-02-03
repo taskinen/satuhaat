@@ -39,17 +39,30 @@
     background-color: var(--bg-color);
     color: var(--text-color);
     transition: background-color 0.3s ease, color 0.3s ease;
+    lang: fi;
+  }
+
+  html {
+    lang: fi;
   }
 
   .square-cell {
-    height: 150px;
+    height: 120px;
     text-align: center;
-    vertical-align: middle;
-    padding: 10px;
+    vertical-align: middle !important;
+    padding: 8px;
     cursor: pointer;
     background-color: var(--cell-bg);
     color: var(--text-color);
     border-color: var(--border-color) !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: normal;
+    font-size: 14px;
+    display: table-cell;
+    hyphens: manual;
+    -webkit-hyphens: manual;
+    -ms-hyphens: manual;
   }
   
   .square-cell.selected {
@@ -59,6 +72,8 @@
   .table {
     table-layout: fixed;
     width: 100%;
+    margin: 0 auto;
+    max-width: 800px;
   }
 
   .theme-toggle {
@@ -83,6 +98,39 @@
 
   .table-bordered {
     border-color: var(--border-color);
+  }
+
+  .container {
+    max-width: 800px;
+    padding: 15px;
+  }
+
+  @media (max-width: 768px) {
+    .square-cell {
+      height: 100px;
+      padding: 4px;
+      font-size: 12px;
+      hyphens: auto;
+      -webkit-hyphens: auto;
+      -ms-hyphens: auto;
+    }
+    
+    h1 {
+      font-size: 1.5rem;
+      margin: 1rem 0;
+    }
+    
+    .container {
+      padding: 0.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .square-cell {
+      height: 80px;
+      padding: 3px;
+      font-size: 11px;
+    }
   }
 </style>
 
