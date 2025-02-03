@@ -18,6 +18,11 @@
     text-align: center;
     vertical-align: middle;
     padding: 10px;
+    cursor: pointer;
+  }
+  
+  .square-cell.selected {
+    background-color: lightgray;
   }
   
   .table {
@@ -27,6 +32,10 @@
 </style>
 
 <script>
+function toggleSelected(cell) {
+  cell.classList.toggle('selected');
+}
+
 var ruudut = [
   "A Le Coq",
   "Ajetaan farmariautolla",
@@ -99,9 +108,9 @@ document.write("<div class=\"container\">");
     document.write("<tr>");
     for (var j=0; j<5; j++) {
       if (i === 2 && j === 2) {
-        document.write("<td class=\"square-cell align-middle\">Enya</td>"); // :)
+        document.write("<td class=\"square-cell align-middle selected\" onclick=\"toggleSelected(this)\">Enya</td>"); // :)
       } else {
-        document.write("<td class=\"square-cell align-middle\">" + ruudut[0] + "</td>");
+        document.write("<td class=\"square-cell align-middle\" onclick=\"toggleSelected(this)\">" + ruudut[0] + "</td>");
         ruudut.shift();
       }
     }
