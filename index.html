@@ -10,13 +10,23 @@
 </head>
 
 <body>
-<div class="theme-toggle">
+<div class="controls">
+  <div class="dropdown">
+    <button id="language-toggle-btn" class="btn dropdown-toggle" aria-label="Select language" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <span>🌐</span>
+    </button>
+    <div class="dropdown-menu" aria-labelledby="language-toggle-btn">
+      <a class="dropdown-item" href="#" data-lang="fi">Suomi</a>
+      <a class="dropdown-item" href="#" data-lang="en">English</a>
+      <a class="dropdown-item" href="#" data-lang="snt">Sentinelese</a>
+    </div>
+  </div>
   <button id="theme-toggle-btn" class="btn" aria-label="Toggle theme">
     <i class="bi bi-sun-fill"></i>
   </button>
 </div>
 
-<h1 class="text-center">Satuhäät ja Unelmahäät bingo</h1>
+<h1 class="text-center" id="title">Satuhäät ja Unelmahäät bingo</h1>
 
 <style>
   :root {
@@ -39,7 +49,6 @@
     background-color: var(--bg-color);
     color: var(--text-color);
     transition: background-color 0.3s ease, color 0.3s ease;
-    lang: fi;
   }
 
   h1 {
@@ -55,10 +64,6 @@
   button:hover {
     background-color: var(--cell-selected);
     color: var(--text-color);
-  }
-
-  html {
-    lang: fi;
   }
 
   .square-cell {
@@ -91,23 +96,43 @@
     max-width: 800px;
   }
 
-  .theme-toggle {
+  .controls {
     position: fixed;
     top: 1rem;
     right: 1rem;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  #language-toggle-btn {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.3rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    border-radius: 4px;
+    background-color: var(--cell-bg);
+    border: 1px solid var(--border-color);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   #theme-toggle-btn {
     background: none;
     border: none;
     color: var(--text-color);
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     padding: 0.5rem;
     cursor: pointer;
     transition: transform 0.3s ease;
   }
 
-  #theme-toggle-btn:hover {
+  #theme-toggle-btn:hover, #language-toggle-btn:hover {
     transform: scale(1.1);
   }
 
@@ -147,9 +172,270 @@
       font-size: 11px;
     }
   }
+
+  .dropdown-menu {
+    background-color: var(--cell-bg);
+    border-color: var(--border-color);
+    min-width: 120px;
+  }
+
+  .dropdown-item {
+    color: var(--text-color);
+    padding: 0.5rem 1rem;
+  }
+
+  .dropdown-item:hover, .dropdown-item:focus {
+    background-color: var(--cell-selected);
+    color: var(--text-color);
+  }
+
+  .dropdown-item.active {
+    background-color: var(--cell-selected);
+    color: var(--text-color);
+    font-weight: bold;
+  }
+
+  /* Make sure the dropdown toggle doesn't show the default caret */
+  .dropdown-toggle::after {
+    display: none;
+  }
 </style>
 
 <script>
+// Translations object
+const translations = {
+  'fi': {
+    'title': 'Satuhäät ja Unelmahäät bingo',
+    'refreshButton': 'Uusi ruudukko!',
+    'centerCell': 'Enya',
+    'items': [
+      "A Le Coq",
+      "Ajetaan farmariautolla",
+      "Appivanhemmat vetävät röökiä",
+      "Asuste, jossa on automerkin nimi",
+      "Best man kiinnittää hääopasteita",
+      "Crocsit",
+      "Ensitapaamiseen liittyy baari-ilta",
+      "Haetaan hääviinaa Tallinnasta",
+      "\"Heh heh.\"",
+      "Hääauton koristeiden asettelu",
+      "Hääjärjestelyistä tulee riitaa",
+      "Hääkampaus sateessa",
+      "Hääkimpun noutaminen kukkakaupasta",
+      "Hääpari käy noutamassa sormukset",
+      "Hääpari pussaa",
+      "Hääpari touhuaa lasten kanssa ulkona",
+      "Hääpari yhdessä lenkillä",
+      "Hääparilla on lemmikkieläin",
+      "Hääpuvun sovitus",
+      "Itse tehty hääruno",
+      "Ja vihdoin kaikki on hyvin",
+      "Joku laulaa karaokea",
+      "Joku on ammatiltaan lähihoitaja",
+      "Joku rassaa autoa",
+      "Juodaan keittiössä kahvit",
+      "Kiusallinen morsiamen ryöstö",
+      "Kuvioitu sivukalju",
+      "Lapsi parkuu kirkossa",
+      "Lapsia edellisistä suhteista",
+      "Lyhythihainen kauluspaita",
+      "Mersu",
+      "Morsiamella on krapula",
+      "Morsiamen rakennekynnet",
+      "Morsian hankkii ripsienpidennykset",
+      "Morsian itkee ja/tai raivoaa",
+      "Morsian vetää röökiä",
+      "\"Näkymättömät\" silikoniolkaimet",
+      "Olkaimettoman topin/mekon nostelu",
+      "Peltomaisema",
+      "Pikkujoulujen väriset kravatit",
+      "Pinkki raita hiuksissa",
+      "Pyyhitään hikeä naamasta",
+      "Riitaa hääpaikalla koristeluista tai istumajärjestyksestä",
+      "Ruma tatuointi",
+      "Ruostetta autossa",
+      "Sormukset hukassa hääpäivänä",
+      "Sulhanen kiinnittää hääopasteita",
+      "Sulhanen on kännissä",
+      "Sulhanen vetää röökiä",
+      "Sulhasella on harmaa puku"
+    ]
+  },
+  'en': {
+    'title': 'Fairy Tale Weddings and Dream Weddings Bingo',
+    'refreshButton': 'New board!',
+    'centerCell': 'Enya',
+    'items': [
+      "A Le Coq",
+      "Driving in a station wagon",
+      "In-laws smoking",
+      "Accessory with a car brand name",
+      "Best man putting up wedding signs",
+      "Crocs",
+      "First meeting involves a night at the bar",
+      "Getting wedding alcohol from Tallinn",
+      "\"Heh heh.\"",
+      "Decorating the wedding car",
+      "Arguments about wedding arrangements",
+      "Wedding hairstyle in the rain",
+      "Picking up the wedding bouquet from the flower shop",
+      "Wedding couple collecting the rings",
+      "Wedding couple kissing",
+      "Wedding couple playing with children outside",
+      "Wedding couple jogging together",
+      "Wedding couple has a pet",
+      "Wedding dress fitting",
+      "Self-made wedding poem",
+      "And finally everything is fine",
+      "Someone singing karaoke",
+      "Someone is a practical nurse by profession",
+      "Someone fixing a car",
+      "Drinking coffee in the kitchen",
+      "Awkward bride kidnapping",
+      "Patterned side haircut",
+      "Child crying in church",
+      "Children from previous relationships",
+      "Short-sleeved dress shirt",
+      "Mercedes car",
+      "Bride has a hangover",
+      "Bride's fake nails",
+      "Bride gets eyelash extensions",
+      "Bride crying and/or raging",
+      "Bride smoking",
+      "\"Invisible\" silicone straps",
+      "Pulling up a strapless top/dress",
+      "Field landscape",
+      "Office Christmas party colored ties",
+      "Pink streak in hair",
+      "Wiping sweat from face",
+      "Argument at the wedding venue about decorations or seating arrangements",
+      "Ugly tattoo",
+      "Rust on the car",
+      "Rings missing on the wedding day",
+      "Groom putting up wedding signs",
+      "Groom is drunk",
+      "Groom smoking",
+      "Groom has a gray suit"
+    ]
+  },
+  'snt': {
+    'title': 'Wah-Tah Ki-Tiki Bingo',
+    'refreshButton': 'Taka-Nui!',
+    'centerCell': 'Enya',
+    'items': [
+      "A Le Ku-ku",
+      "Ti-ti wagga-wagga",
+      "Maka-paka oo-oo tiki",
+      "Kala-ma nama-nama",
+      "Ki-ki toko paka-mata",
+      "Kroka-talas",
+      "Wu-bu ji-ji bula-bula",
+      "Bala-bala kuma na-na",
+      "\"Ha-ha.\"",
+      "Koo-koo aka-maka tanga",
+      "Waga-waga tiki-too mala",
+      "Kala-hala toka-toka wawa",
+      "Piki-liki haka-maka",
+      "Ti-ki mo-mo wi-wi",
+      "Paka-maka mu-mu",
+      "Ti-ki waka-taka bo-bo",
+      "Poko-moko hapa-lapa",
+      "Tiki-liki mala-pala",
+      "Waka-maka ki-ki",
+      "Hiti-hiki kaka-laka",
+      "Hola maka tiki",
+      "Maka-laka oo-oo",
+      "Ki-ki pala-nala",
+      "Ti-ki laka-waka",
+      "Gu-gu kafa-kafa",
+      "Waka-waka ki-ki ni-ni",
+      "Kala-bala ti-ki",
+      "Bo-bo waka-taka",
+      "Ma-ma ki-ki ti-ti",
+      "Haka-laka piki",
+      "Me-me ku-ku",
+      "Ti-ki mala-pala kaka",
+      "Ki-ki naka-baka",
+      "Ti-ki ha-ka ku-ku pi-pi",
+      "Ti-ki bu-bu waka-taka",
+      "Ti-ki oo-oo tiki",
+      "Siliko-naka oo-la-la",
+      "Topa-topa waka-maka",
+      "Ti-ki mala-pala",
+      "Kala-wala ti-ki",
+      "Piki pala-nala",
+      "Fala-mala ti-ki waka",
+      "Waka-laka ti-ki kala-bala",
+      "Tatu-batu kiki",
+      "Ti-ki kala-pala",
+      "Wi-wi kaka-laka tiki-tiki",
+      "Ki-ki toko paka-mata",
+      "Ki-ki bu-bu waka-taka",
+      "Ki-ki oo-oo tiki",
+      "Ki-ki ga-ga ku-ku"
+    ]
+  }
+};
+
+// Language handling
+function getPreferredLanguage() {
+  if (localStorage.getItem('language')) {
+    return localStorage.getItem('language');
+  }
+  return 'fi'; // Default to Finnish
+}
+
+function setLanguage(lang) {
+  document.documentElement.setAttribute('lang', lang);
+  localStorage.setItem('language', lang);
+  updateLanguageToggleButton(lang);
+  updatePageText(lang);
+}
+
+function updateLanguageToggleButton(lang) {
+  // Highlight the active language in the dropdown
+  const dropdownItems = document.querySelectorAll('.dropdown-item');
+  dropdownItems.forEach(item => {
+    if (item.getAttribute('data-lang') === lang) {
+      item.classList.add('active');
+    } else {
+      item.classList.remove('active');
+    }
+  });
+}
+
+function toggleLanguage() {
+  const currentLang = document.documentElement.getAttribute('lang') || 'fi';
+  const newLang = currentLang === 'fi' ? 'en' : 'fi';
+  setLanguage(newLang);
+}
+
+function updatePageText(lang) {
+  document.getElementById('title').textContent = translations[lang].title;
+  
+  // Update refresh button if it exists
+  const refreshButton = document.getElementById('refresh-button');
+  if (refreshButton) {
+    refreshButton.textContent = translations[lang].refreshButton;
+  }
+  
+  // Update bingo cells if the board exists
+  const cells = document.querySelectorAll('.square-cell');
+  if (cells.length > 0) {
+    cells.forEach((cell) => {
+      const itemIndex = cell.getAttribute('data-item-index');
+      if (itemIndex === 'center') {
+        cell.textContent = translations[lang].centerCell;
+      } else if (itemIndex !== null) {
+        cell.textContent = translations[lang].items[parseInt(itemIndex)];
+      }
+    });
+  }
+  
+  // Update document title
+  document.title = translations[lang].title;
+}
+
 // Theme handling
 function getPreferredTheme() {
   if (localStorage.getItem('theme')) {
@@ -180,11 +466,74 @@ function toggleTheme() {
   setTheme(newTheme);
 }
 
-// Initialize theme
+// Initialize theme and language
 document.addEventListener('DOMContentLoaded', () => {
+  // Set lang attribute explicitly to match our preferred language
+  const preferredLang = getPreferredLanguage();
+  document.documentElement.setAttribute('lang', preferredLang);
+  
   setTheme(getPreferredTheme());
+  
+  // Create the bingo grid once the DOM is fully loaded
+  const itemPool = [...Array(translations[preferredLang].items.length).keys()];
+  const shuffledIndices = shuffle(itemPool).slice(0, 24);
+  
+  // Generate the bingo grid HTML and insert it into the page
+  const container = document.createElement('div');
+  container.className = 'container';
+  container.innerHTML = generateBingoGridHtml(shuffledIndices, preferredLang);
+  document.body.appendChild(container);
+  
+  // Add the refresh button
+  const refreshDiv = document.createElement('div');
+  refreshDiv.className = 'text-center';
+  const refreshButton = document.createElement('button');
+  refreshButton.id = 'refresh-button';
+  refreshButton.onclick = function() { window.location.reload(); };
+  refreshButton.textContent = translations[preferredLang].refreshButton;
+  refreshDiv.appendChild(refreshButton);
+  document.body.appendChild(refreshDiv);
+  
+  // Now set the language which will update text without reshuffling
+  setLanguage(preferredLang);
+  
+  // Set up event listeners
   document.getElementById('theme-toggle-btn').addEventListener('click', toggleTheme);
+  
+  // Add click handlers for language dropdown items
+  document.querySelectorAll('.dropdown-item').forEach(item => {
+    item.addEventListener('click', function(e) {
+      e.preventDefault();
+      const lang = this.getAttribute('data-lang');
+      setLanguage(lang);
+    });
+  });
 });
+
+// Function to generate the bingo grid HTML
+function generateBingoGridHtml(itemIndices, lang) {
+  const selectedItems = [...itemIndices]; // Make a copy so we don't modify the original array
+  
+  let html = '<table class="table table-bordered" style="table-layout: fixed; width: 100%; height: 100%;">';
+  
+  for (let i = 0; i < 5; i++) {
+    html += '<tr>';
+    for (let j = 0; j < 5; j++) {
+      if (i === 2 && j === 2) { // Center cell with Enya
+        html += '<td class="square-cell align-middle selected" onclick="toggleSelected(this)" data-item-index="center">' + 
+               translations[lang].centerCell + '</td>';
+      } else {
+        const itemIndex = selectedItems.shift();
+        html += '<td class="square-cell align-middle" onclick="toggleSelected(this)" data-item-index="' + 
+               itemIndex + '">' + translations[lang].items[itemIndex] + '</td>';
+      }
+    }
+    html += '</tr>';
+  }
+  html += '</table>';
+  
+  return html;
+}
 
 // Watch for system theme changes
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
@@ -196,94 +545,7 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e)
 function toggleSelected(cell) {
   cell.classList.toggle('selected');
 }
-
-var ruudut = [
-  "A Le Coq",
-  "Ajetaan farmariautolla",
-  "Appivanhemmat vetävät röökiä",
-  "Asuste, jossa on automerkin nimi",
-  "Best man kiinnittää hääopasteita",
-  "Crocsit",
-  "Ensitapaamiseen liittyy baari-ilta",
-  "Haetaan hääviinaa Tallinnasta",
-  "\"Heh heh.\"",
-  "Hääauton koristeiden asettelu",
-  "Hääjärjestelyistä tulee riitaa",
-  "Hääkampaus sateessa",
-  "Hääkimpun noutaminen kukkakaupasta",
-  "Hääpari käy noutamassa sormukset",
-  "Hääpari pussaa",
-  "Hääpari touhuaa lasten kanssa ulkona",
-  "Hääpari yhdessä lenkillä",
-  "Hääparilla on lemmikkieläin",
-  "Hääpuvun sovitus",
-  "Itse tehty hääruno",
-  "Ja vihdoin kaikki on hyvin",
-  "Joku laulaa karaokea",
-  "Joku on ammatiltaan lähihoitaja",
-  "Joku rassaa autoa",
-  "Juodaan keittiössä kahvit",
-  "Kiusallinen morsiamen ryöstö",
-  "Kuvioitu sivukalju",
-  "Lapsi parkuu kirkossa",
-  "Lapsia edellisistä suhteista",
-  "Lyhythihainen kauluspaita",
-  "Mersu",
-  "Morsiamella on krapula",
-  "Morsiamen rakennekynnet",
-  "Morsian hankkii ripsienpidennykset",
-  "Morsian itkee ja/tai raivoaa",
-  "Morsian vetää röökiä",
-  "\"Näkymättömät\" silikoniolkaimet",
-  "Olkaimettoman topin/mekon nostelu",
-  "Peltomaisema",
-  "Pikkujoulujen väriset kravatit",
-  "Pinkki raita hiuksissa",
-  "Pyyhitään hikeä naamasta",
-  "Riitaa hääpaikalla koristeluista tai istumajärjestyksestä",
-  "Ruma tatuointi",
-  "Ruostetta autossa",
-  "Sormukset hukassa hääpäivänä",
-  "Sulhanen kiinnittää hääopasteita",
-  "Sulhanen on kännissä",
-  "Sulhanen vetää röökiä",
-  "Sulhasella on harmaa puku",
-  "Sulhasella on krapula",
-  "Suomi-leijona missä tahansa muodossa",
-  "Teemahäät tai väriteema",
-  "Tiara",
-  "Tribaalitatuointi",
-  "Työväentalo",
-  "Vieraalla liian monta paidannappia auki",
-  "Viininpunainen häiden korostevärinä",
-  "Violetti on häiden koristevärinä",
-  "Vähintään kahta väriä hiuksissa",
-  "Väärän kokoinen pikkutakki vieraalla",
-  ];
-
-ruudut = shuffle(ruudut);
-
-document.write("<div class=\"container\">");
-  document.write("<table class=\"table table-bordered\" style=\"table-layout: fixed; width: 100%; height: 100%;\">");
-  for (var i=0; i<5; i++) {
-    document.write("<tr>");
-    for (var j=0; j<5; j++) {
-      if (i === 2 && j === 2) {
-        document.write("<td class=\"square-cell align-middle selected\" onclick=\"toggleSelected(this)\">Enya</td>"); // :)
-      } else {
-        document.write("<td class=\"square-cell align-middle\" onclick=\"toggleSelected(this)\">" + ruudut[0] + "</td>");
-        ruudut.shift();
-      }
-    }
-    document.write("</tr>");
-  }
-  document.write("</table>");
-  document.write("</div>");
 </script>
-
-<div class="text-center">
-  <button onClick="window.location.reload();">Uusi ruudukko!</button>
-</div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
