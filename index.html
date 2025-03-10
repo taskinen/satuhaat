@@ -45,6 +45,27 @@
     --border-color: #495057;
   }
 
+  [data-theme="dark"] .dropdown-item,
+  [data-theme="dark"] a,
+  [data-theme="dark"] p,
+  [data-theme="dark"] span,
+  [data-theme="dark"] div,
+  [data-theme="dark"] h1,
+  [data-theme="dark"] h2,
+  [data-theme="dark"] h3,
+  [data-theme="dark"] h4,
+  [data-theme="dark"] h5,
+  [data-theme="dark"] h6,
+  [data-theme="dark"] button,
+  [data-theme="dark"] input,
+  [data-theme="dark"] select,
+  [data-theme="dark"] textarea,
+  [data-theme="dark"] label,
+  [data-theme="dark"] th,
+  [data-theme="dark"] td {
+    color: var(--text-color);
+  }
+
   body {
     background-color: var(--bg-color);
     color: var(--text-color);
@@ -198,6 +219,40 @@
   /* Make sure the dropdown toggle doesn't show the default caret */
   .dropdown-toggle::after {
     display: none;
+  }
+
+  /* Ensure Bootstrap tables respect dark mode */
+  [data-theme="dark"] .table,
+  [data-theme="dark"] .table-bordered,
+  [data-theme="dark"] .table-striped {
+    color: var(--text-color);
+  }
+
+  [data-theme="dark"] .table th,
+  [data-theme="dark"] .table td {
+    border-color: var(--border-color);
+    color: var(--text-color);
+  }
+
+  /* Ensure all text is properly colored in dark mode */
+  [data-theme="dark"] body {
+    color: var(--text-color) !important;
+  }
+
+  /* Ensure Bootstrap dropdown menu items respect dark mode */
+  [data-theme="dark"] .dropdown-menu {
+    background-color: var(--cell-bg) !important;
+    border-color: var(--border-color) !important;
+  }
+
+  [data-theme="dark"] .dropdown-item {
+    color: var(--text-color) !important;
+  }
+
+  [data-theme="dark"] .dropdown-item:hover,
+  [data-theme="dark"] .dropdown-item:focus {
+    background-color: var(--cell-selected) !important;
+    color: var(--text-color) !important;
   }
 </style>
 
