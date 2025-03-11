@@ -4,6 +4,7 @@
   --cell-bg: #ffffff;
   --cell-selected: #e9ecef;
   --border-color: #dee2e6;
+  --bingo-highlight: rgba(255, 193, 7, 0.8);
 }
 
 [data-theme="dark"] {
@@ -12,6 +13,7 @@
   --cell-bg: #343a40;
   --cell-selected: #495057;
   --border-color: #495057;
+  --bingo-highlight: rgba(255, 193, 7, 0.6);
 }
 
 body {
@@ -289,4 +291,41 @@ button:focus,
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+.square-cell.bingo-highlight {
+  animation: bingo-pulse 1s ease-in-out infinite alternate;
+  box-shadow: 0 0 15px var(--bingo-highlight) !important;
+  z-index: 10;
+  position: relative;
+}
+
+@keyframes bingo-pulse {
+  0% {
+    transform: scale(0.98);
+    box-shadow: 0 0 10px var(--bingo-highlight);
+  }
+  100% {
+    transform: scale(1.02);
+    box-shadow: 0 0 20px var(--bingo-highlight);
+  }
+}
+
+/* Make sure bingo highlight works with hover */
+.square-cell.bingo-highlight:hover {
+  animation: bingo-pulse 1s ease-in-out infinite alternate;
+  background-color: var(--cell-selected) !important;
+}
+
+[data-theme="dark"] .square-cell.bingo-highlight:hover {
+  background-color: var(--cell-selected) !important;
+}
+
+/* Ensure the canvas for confetti sits on top */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 1000;
 } 
