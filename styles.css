@@ -1,0 +1,269 @@
+:root {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --cell-bg: #ffffff;
+  --cell-selected: #e9ecef;
+  --border-color: #dee2e6;
+}
+
+[data-theme="dark"] {
+  --bg-color: #212529;
+  --text-color: #ffffff;
+  --cell-bg: #343a40;
+  --cell-selected: #495057;
+  --border-color: #495057;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+h1 {
+  color: var(--text-color);
+  margin: 1.5rem 0;
+}
+
+button {
+  color: var(--text-color);
+  background-color: var(--cell-bg);
+  border-color: var(--border-color);
+}
+
+button:hover {
+  background-color: var(--cell-selected);
+  color: var(--text-color);
+}
+
+.square-cell {
+  height: 120px;
+  text-align: center;
+  vertical-align: middle !important;
+  padding: 8px;
+  cursor: pointer;
+  background-color: var(--cell-bg);
+  color: var(--text-color);
+  border-color: var(--border-color) !important;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: normal;
+  font-size: 14px;
+  display: table-cell;
+  hyphens: manual;
+  -webkit-hyphens: manual;
+  -ms-hyphens: manual;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.square-cell.selected {
+  background-color: var(--cell-selected);
+  transform: scale(0.98);
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.square-cell:hover {
+  transform: scale(1.02);
+  z-index: 1;
+}
+
+.square-cell.selected:hover {
+  transform: scale(1);
+}
+
+.table {
+  table-layout: fixed;
+  width: 100%;
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+.controls {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 1000;
+}
+
+#language-toggle-btn {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  font-size: 1.3rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  border-radius: 4px;
+  background-color: var(--cell-bg);
+  border: 1px solid var(--border-color);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#theme-toggle-btn {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  font-size: 1.2rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  background-color: var(--cell-bg);
+  border: 1px solid var(--border-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#theme-toggle-btn:hover, #language-toggle-btn:hover {
+  transform: scale(1.1);
+}
+
+.table-bordered {
+  border-color: var(--border-color);
+}
+
+.container {
+  max-width: 800px;
+  padding: 15px;
+}
+
+.refresh-container {
+  margin: 1.5rem 0;
+}
+
+#refresh-button {
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+#refresh-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#refresh-button:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 768px) {
+  .square-cell {
+    height: 100px;
+    padding: 4px;
+    font-size: 12px;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+    margin: 1rem 0;
+  }
+  
+  .container {
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .square-cell {
+    height: 80px;
+    padding: 3px;
+    font-size: 11px;
+  }
+}
+
+.dropdown-menu {
+  background-color: var(--cell-bg);
+  border-color: var(--border-color);
+  min-width: 120px;
+}
+
+.dropdown-item {
+  color: var(--text-color);
+  padding: 0.5rem 1rem;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+  background-color: var(--cell-selected);
+  color: var(--text-color);
+}
+
+.dropdown-item.active {
+  background-color: var(--cell-selected);
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+/* Make sure the dropdown toggle doesn't show the default caret */
+.dropdown-toggle::after {
+  display: none;
+}
+
+/* Ensure all text is properly colored in dark mode */
+[data-theme="dark"] button,
+[data-theme="dark"] .dropdown-menu,
+[data-theme="dark"] .dropdown-item,
+[data-theme="dark"] .table,
+[data-theme="dark"] .table th,
+[data-theme="dark"] .table td,
+[data-theme="dark"] body,
+[data-theme="dark"] .dropdown-item:hover,
+[data-theme="dark"] .dropdown-item:focus {
+  color: var(--text-color);
+}
+
+/* Fix for table cells in dark mode */
+[data-theme="dark"] .square-cell {
+  background-color: var(--cell-bg);
+  color: var(--text-color);
+  border-color: var(--border-color) !important;
+}
+
+/* Enhanced visual indicator for selected cells in dark mode */
+[data-theme="dark"] .square-cell.selected {
+  background-color: #1e4b75; /* A more distinctive blue color instead of the darker gray */
+  border: 2px solid #3498db !important;
+  box-shadow: inset 0 0 10px rgba(52, 152, 219, 0.3);
+}
+
+[data-theme="dark"] .dropdown-menu {
+  background-color: var(--cell-bg);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .dropdown-item:hover,
+[data-theme="dark"] .dropdown-item:focus {
+  background-color: var(--cell-selected);
+}
+
+/* A11y focus indicators */
+button:focus, 
+.dropdown-item:focus {
+  outline: 2px solid var(--text-color);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+} 
