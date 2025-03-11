@@ -66,10 +66,26 @@ button:hover {
 .square-cell:hover {
   transform: scale(1.02);
   z-index: 1;
+  background-color: #ffeb99; /* Light yellow highlight color */
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Add dark theme hover styles */
+[data-theme="dark"] .square-cell:hover {
+  background-color: #665e00; /* Darker yellow that works in dark mode */
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
 }
 
 .square-cell.selected:hover {
   transform: scale(1);
+  background-color: #ffcc66; /* Darker highlight for selected cells */
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Add dark theme selected hover styles */
+[data-theme="dark"] .square-cell.selected:hover {
+  background-color: #8c7b00; /* Darker highlight for selected cells in dark mode */
+  box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2);
 }
 
 .table {
@@ -230,6 +246,13 @@ button:hover {
   background-color: var(--cell-bg);
   color: var(--text-color);
   border-color: var(--border-color) !important;
+}
+
+/* Ensure text color in dark mode with higher specificity */
+[data-theme="dark"] .table td.square-cell,
+[data-theme="dark"] .table .square-cell,
+[data-theme="dark"] table.table .square-cell {
+  color: var(--text-color) !important;
 }
 
 /* Enhanced visual indicator for selected cells in dark mode */
