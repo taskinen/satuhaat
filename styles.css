@@ -237,10 +237,14 @@ button:hover {
 [data-theme="dark"] .table,
 [data-theme="dark"] .table th,
 [data-theme="dark"] .table td,
-[data-theme="dark"] body,
 [data-theme="dark"] .dropdown-item:hover,
 [data-theme="dark"] .dropdown-item:focus {
   color: var(--text-color);
+}
+
+/* Force body text color in dark mode */
+[data-theme="dark"] body {
+  color: var(--text-color) !important;
 }
 
 /* Fix for table cells in dark mode */
@@ -328,4 +332,4 @@ canvas {
   left: 0;
   pointer-events: none;
   z-index: 1000;
-} 
+}
