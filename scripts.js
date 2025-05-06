@@ -18,6 +18,9 @@ const shuffle = (array) => {
   return shuffled;
 };
 
+// Set to store achieved bingo lines to prevent multiple celebrations for the same line
+let achievedBingoLines = new Set();
+
 /**
  * Toggle the selected state of a bingo cell
  * @param {HTMLElement} cell - The cell to toggle
@@ -34,64 +37,67 @@ const toggleSelected = (cell) => {
 
 /**
  * Check if there's a bingo (5 selected cells in a row, column, or diagonal)
+ * Each new bingo line will trigger a highlight and celebration once.
  */
 const checkForBingo = () => {
   const grid = document.querySelector('table');
   const rows = grid.querySelectorAll('tr');
-  let hasBingo = false;
   
   // Check horizontal lines
   for (let i = 0; i < 5; i++) {
     const cells = rows[i].querySelectorAll('td');
     if (cells.length === 5 && [...cells].every(cell => cell.classList.contains('selected'))) {
-      hasBingo = true;
-      highlightBingoLine([...cells]);
-      break;
+      const lineId = `h-${i}`;
+      if (!achievedBingoLines.has(lineId)) {
+        achievedBingoLines.add(lineId);
+        highlightBingoLine([...cells]);
+        celebration();
+      }
     }
   }
   
   // Check vertical lines
-  if (!hasBingo) {
-    for (let i = 0; i < 5; i++) {
-      const column = [];
-      for (let j = 0; j < 5; j++) {
-        column.push(rows[j].querySelectorAll('td')[i]);
-      }
-      if (column.every(cell => cell.classList.contains('selected'))) {
-        hasBingo = true;
+  for (let i = 0; i < 5; i++) {
+    const column = [];
+    for (let j = 0; j < 5; j++) {
+      column.push(rows[j].querySelectorAll('td')[i]);
+    }
+    if (column.every(cell => cell.classList.contains('selected'))) {
+      const lineId = `v-${i}`;
+      if (!achievedBingoLines.has(lineId)) {
+        achievedBingoLines.add(lineId);
         highlightBingoLine(column);
-        break;
+        celebration();
       }
     }
   }
   
   // Check diagonal (top-left to bottom-right)
-  if (!hasBingo) {
-    const diagonal1 = [];
-    for (let i = 0; i < 5; i++) {
-      diagonal1.push(rows[i].querySelectorAll('td')[i]);
-    }
-    if (diagonal1.every(cell => cell.classList.contains('selected'))) {
-      hasBingo = true;
+  const diagonal1 = [];
+  for (let i = 0; i < 5; i++) {
+    diagonal1.push(rows[i].querySelectorAll('td')[i]);
+  }
+  if (diagonal1.every(cell => cell.classList.contains('selected'))) {
+    const lineId = 'diag-tl-br';
+    if (!achievedBingoLines.has(lineId)) {
+      achievedBingoLines.add(lineId);
       highlightBingoLine(diagonal1);
+      celebration();
     }
   }
   
   // Check diagonal (top-right to bottom-left)
-  if (!hasBingo) {
-    const diagonal2 = [];
-    for (let i = 0; i < 5; i++) {
-      diagonal2.push(rows[i].querySelectorAll('td')[4 - i]);
-    }
-    if (diagonal2.every(cell => cell.classList.contains('selected'))) {
-      hasBingo = true;
-      highlightBingoLine(diagonal2);
-    }
+  const diagonal2 = [];
+  for (let i = 0; i < 5; i++) {
+    diagonal2.push(rows[i].querySelectorAll('td')[4 - i]);
   }
-  
-  // Celebrate if bingo found
-  if (hasBingo) {
-    celebration();
+  if (diagonal2.every(cell => cell.classList.contains('selected'))) {
+    const lineId = 'diag-tr-bl';
+    if (!achievedBingoLines.has(lineId)) {
+      achievedBingoLines.add(lineId);
+      highlightBingoLine(diagonal2);
+      celebration();
+    }
   }
 };
 
