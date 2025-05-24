@@ -8,6 +8,9 @@
 }
 
 [data-theme="dark"] {
+  * {
+    color: inherit;
+  }
   --bg-color: #212529;
   --text-color: #ffffff;
   --cell-bg: #343a40;
